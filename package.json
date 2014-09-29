@@ -1,0 +1,13 @@
+{
+  "name"          : "funcs",
+  "description"   : "",
+  "url"           : "http://github.com/dpweb/funcs/",
+  "keywords"      : ["util", "nodejs", "express", "web", "html5"],
+  "author"        : "C Borkert <ILIKECHEESE@dpsw.info>",
+  "main": "funcs.js",
+  "repository": {
+  	"type": "git",
+ 	"url": "git://github.com/dpweb/funcs.git"
+  },
+  "version"       : "0.0.1"
+}

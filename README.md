@@ -6,12 +6,21 @@
 
   global.btcqr = function(toaddr, btcamt, message, response_or_filename){
 
-  global.btcticker = function(){
+  global.blockchainticker = function(){
 
   global.btcsend = function(to, satoshi, note, cb){
 
   global.btcnewaddress = function(){
   
+  global.exchangerate = function(from, to, cb){
+
+  global.btccticker = function(){
+
+  global.okcointicker = function(){
+
+  global.bitstampticker = function(cb){
+
+
   global.dumpdb = function(obj){
 
   global.tweet = function(what, token, tsecret, cb){

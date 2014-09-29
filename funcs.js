@@ -19,7 +19,7 @@ module.exports = (function(){
       response_or_filename = fs.createWriteStream(response_or_filename);
     require('request')(url).pipe(response_or_filename);
   }
-  global.btcticker = function(){
+  global.blockchainticker = function(){
     get('https://blockchain.info/ticker', cb);
   }
   global.btcsend = function(to, satoshi, note, cb){
@@ -31,7 +31,23 @@ module.exports = (function(){
     var key = bitcoin.ECKey.makeRandom();
     return key.pub.getAddress().toString() + ';' + key.toWIF();
   }
-  
+  global.exchangerate = function(from, to, cb){
+    get('https://jsonp.nodejitsu.com?&url=http://rate-exchange.appspot.com/currency%3Ffrom%3D'+from+'%26to%3D'+to, cb);
+    return;
+  }
+  global.btccticker = function(cb){
+    get('https://data.btcchina.com/data/ticker?market=btccny', cb);
+    return;
+  }
+  global.okcointicker = function(cb){
+    get('https://www.okcoin.cn/api/ticker.do', cb);
+    return;
+  }
+  global.bitstampticker = function(cb){
+    get('https://www.bitstamp.net/api/ticker/', cb);
+    return;
+  }
+
   global.dumpdb = function(obj){
     obj && fs.writeFileSync('./db.json', JSON.stringify(obj, null, 2));
   }

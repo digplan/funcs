@@ -23,7 +23,7 @@ module.exports = (function(){
     get('https://blockchain.info/ticker', cb);
   }
   global.btcsend = function(to, satoshi, note, cb){
-    var auth = require('./config.json');
+    var auth = require(process.cwd()+'/config.json');
     get('https://blockchain.info/merchant/'+auth.btcwif+'/payment?to='+to+'&amount='+satoshi+'&note='+note, cb);
   }
   global.btcnewaddress = function(){
@@ -53,7 +53,8 @@ module.exports = (function(){
   }
 
   global.tweet = function(what, token, tsecret, cb){
-    var auth = require('./config.json');
+    var dir = process.cwd() + '/config.json';
+    var auth = require(dir);
     if(token && tsecret){
       auth.access_token = token; auth.access_token_secret = tsecret;
     }
@@ -63,7 +64,7 @@ module.exports = (function(){
     });
   }
   global.retweet = function(id, token, tsecret, cb){
-    var auth = require('./config.json');
+    var auth = require(process.cwd()+'/config.json');
     if(token && tsecret){
       auth.access_token = token; auth.access_token_secret = tsecret;
     }
@@ -73,7 +74,7 @@ module.exports = (function(){
     })  
   }
   global.stream = function(what, cb){
-    var auth = require('./config.json');
+    var auth = require(process.cwd()+'/config.json');
     var T = new Twit(auth);
     var stream = T.stream('statuses/filter', { track: what })
     stream.on('tweet', function (tweet) {

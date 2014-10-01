@@ -1,0 +1,15 @@
+{
+  "btcwif": "",
+  "access_token_secret": "",
+  "consumer_key": "",
+  "consumer_secret": "",
+  "access_token": "",
+  "access_token_secret": "",
+  "mailgun_from":  "",
+  "mailgun_api_key":  "",
+  "nexmo_number": "",
+  "nexmo_key": "",
+  "nexmo_secret": "",
+  "cloudflare_tkn": "",
+  "cloudflare_email": ""
+}

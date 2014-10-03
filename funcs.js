@@ -51,6 +51,21 @@ module.exports = (function(){
     get('https://api.bitfinex.com/v1/pubticker/BTCUSD', cb);
   }
 
+  global.uberproducts = function(lat, long, cb){
+    var auth = require(process.cwd() + '/config.json').uber_server_token;
+    get('https://api.uber.com/v1/products?server_token='+token+'&latitude='+lat+'&longitude='+long, cb);
+  }
+  global.uberestimatetime = function(startlat, startlong, endlat, endlong){
+    var auth = require(process.cwd() + '/config.json').uber_server_token;
+    var qs = 'server_token='+token+'&start_latitude='+startlat+'&start_longitude='+startlong+'&end_latitude='+endlat+'&end_longitude='+endlong;
+    get('https://api.uber.com/v1/estimates/time?' + qs, cb);
+  }
+  global.uberestimateprice = function(startlat, startlong, endlat, endlong){
+    var auth = require(process.cwd() + '/config.json').uber_server_token;
+    var qs = 'server_token='+token+'&start_latitude='+startlat+'&start_longitude='+startlong+'&end_latitude='+endlat+'&end_longitude='+endlong;
+    get('https://api.uber.com/v1/estimates/price?' + qs, cb);
+  }
+
   global.dumpdb = function(obj){
     obj && fs.writeFileSync('./db.json', JSON.stringify(obj, null, 2));
   }

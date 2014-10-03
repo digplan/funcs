@@ -11,5 +11,8 @@
   "nexmo_key": "",
   "nexmo_secret": "",
   "cloudflare_tkn": "",
-  "cloudflare_email": ""
+  "cloudflare_email": "",
+  "uber_client_id": "",
+  "uber_server_token": "",
+  "uber_secret":""
 }

@@ -1,17 +1,21 @@
 {
+  "btcaddr": "",
   "btcwif": "",
   "access_token_secret": "",
   "consumer_key": "",
   "consumer_secret": "",
   "access_token": "",
   "access_token_secret": "",
-  "mailgun_from":  "",
+
+  "mailgun_domain":  "",
   "mailgun_api_key":  "",
+  
   "nexmo_number": "",
   "nexmo_key": "",
   "nexmo_secret": "",
   "cloudflare_tkn": "",
   "cloudflare_email": "",
+  
   "uber_client_id": "",
   "uber_server_token": "",
   "uber_secret":""

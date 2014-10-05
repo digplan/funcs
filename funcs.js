@@ -7,21 +7,29 @@ module.exports = (function(){
       (cb || console.log.bind(console))(e||b);
     });
   };
-  global.btcbalance = function(addr, cb){ 
+  global.btcbalance = function(addr, cb){
+    if(!addr)
+      addr = require(process.cwd() + '/config.json').btcaddr;
     get('https://blockchain.info/q/addressbalance/'+addr, cb);
   };
   global.btctx = function(txno, sendr_or_recvr, cb){
     get('https://blockchain.info/q/txresult/'+txno+'/'+sendr_or_recvr, cb);
   }; 
+  global.btcstream = function(addr, cb){
+    var ws = require('ws'); var sock = ws.connect('wss://ws.blockchain.info/inv');
+    sock.onmessage = cb||console.log.bind(console);
+    if(!addr)
+      sock.send('{"op":"unconfirmed_sub"}');
+    else
+      sock.send('{"op":"addr_sub", "addr":"'+addr+'"}');
+  }
   global.btcqr = function(toaddr, btcamt, message, response_or_filename){
     var url = 'https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=bitcoin:'+toaddr+'?amount='+btcamt+'&message='+message;
     if(typeof response_or_filename === 'string')
       response_or_filename = fs.createWriteStream(response_or_filename);
     require('request')(url).pipe(response_or_filename);
   }
-  global.blockchainticker = function(){
-    get('https://blockchain.info/ticker', cb);
-  }
+
   global.btcsend = function(to, satoshi, note, cb){
     var auth = require(process.cwd()+'/config.json');
     get('https://blockchain.info/merchant/'+auth.btcwif+'/payment?to='+to+'&amount='+satoshi+'&note='+note, cb);
@@ -31,24 +39,34 @@ module.exports = (function(){
     var key = bitcoin.ECKey.makeRandom();
     return key.pub.getAddress().toString() + ';' + key.toWIF();
   }
+
   global.exchangerate = function(from, to, cb){
     get('https://jsonp.nodejitsu.com?&url=http://rate-exchange.appspot.com/currency%3Ffrom%3D'+from+'%26to%3D'+to, cb);
     return;
   }
-  global.btccticker = function(cb){
+  global.btcprice_blockchain = function(){
+    get('https://blockchain.info/ticker', cb);
+  }
+  global.btcprice_bitpay = function(){
+    get('https://bitpay.com/api/rates', cb);
+  }
+  global.btcprice_btcchina = function(cb){
     get('https://data.btcchina.com/data/ticker?market=btccny', cb);
     return;
   }
-  global.okcointicker = function(cb){
+  global.btcprice_okcoin = function(cb){
     get('https://www.okcoin.cn/api/ticker.do', cb);
     return;
   }
-  global.bitstampticker = function(cb){
+  global.btcprice_bitstamp = function(cb){
     get('https://www.bitstamp.net/api/ticker/', cb);
     return;
   }
-  global.bitfinexticker = function(cb){
+  global.btcprice_bitfinex = function(cb){
     get('https://api.bitfinex.com/v1/pubticker/BTCUSD', cb);
+  }
+  global.btcprice_kraken = function(cb){
+    get('https://api.kraken.com/0/public/Depth?pair=XBTUSD&count=1', cb);
   }
 
   global.uberproducts = function(lat, long, cb){
@@ -98,6 +116,12 @@ module.exports = (function(){
     stream.on('tweet', function (tweet) {
       (cb || console.log.bind(console))(tweet);
     })
+  }
+
+  global.email = function(from, to, subject, body, cb){
+    var url = 'https://api:'+auth.mailgun_api_key+'@api.mailgun.net/v2/' + 
+      auth.mailgun_domain+'/messages?from='+from+'&to='+to+'&subject='+subject+'&text='+body;
+    require('request').post(url, cb || console.log.bind(console));
   }
 
 })();

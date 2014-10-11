@@ -18,5 +18,8 @@
   
   "uber_client_id": "",
   "uber_server_token": "",
-  "uber_secret":""
+  "uber_secret":"",
+
+  "btcc_key": "",
+  "btcc_secret": ""
 }

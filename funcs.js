@@ -202,4 +202,61 @@ module.exports = (function(){
     return app;
   };
 
+  global.store = function(port, ip){
+    var app = server(port, ip, 1);
+    app.get('/:dbname/:val', function(r, s){
+      
+    })
+  }
+
+  var c = require('crypto');
+
+function base58encode(buffer) {
+  var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  var digits = [0];
+  for (var i=0, carry=0; i < buffer.length; i++) {
+    for (var j = 0; j < digits.length; j++) digits[j] <<= 8;
+    digits[0] += buffer[i];
+    for (j = 0; j < digits.length; ++j) {
+      digits[j] += carry;
+      carry = (digits[j] / 58) | 0;
+      digits[j] %= 58;
+    }
+    while (carry) {
+      digits.push(carry % 58);
+      carry = (carry / 58) | 0;
+    }
+  }
+  for (var i=0; buffer[i] === 0 && i < buffer.length - 1; i++) digits.push(0);
+  return digits.reverse().map(function(digit) { return ALPHABET[digit] }).join('');
+}
+
+function sha256(buffer){
+  return c.createHash('sha256').update(buffer).digest();
+}
+
+function ripemd160(buffer){
+  return c.createHash('ripemd160').update(buffer).digest();
+}
+
+function b58check(buffer) {
+  var hash = sha256(sha256(buffer));
+  return base58encode(Buffer.concat([buffer, hash.slice(0, 4)]));
+}
+
+global.btc_createaddress = function(passphrase){
+  
+  passphrase = passphrase || c.randomBytes(32).toString('hex');
+  // private key aka secret exponent
+  var secret_exponent = Buffer.concat([new Buffer('80', 'hex'), sha256(passphrase)]);
+  var wif = b58check(secret_exponent);
+  console.log(wif);
+
+//
+  var public_key = '04c456e5eb3f7e2f9ad4d046a0410fb5d3233dc3dacaf79eac3dc8384154126f141a46ae5b897f16e6d578ee3087660aee5fc7294c4cd5e5e21e9148fea09eff75';
+  var hash160 = ripemd160(sha256(new Buffer(public_key, 'hex')));
+  var btcaddress = b58check(Buffer.concat([new Buffer('00', 'hex'), hash160]));
+  console.log(btcaddress);
+}
+
 })();
